@@ -236,7 +236,10 @@ def run(generator, args, anchor_params):
         if args.no_gui:
             output_path = make_output_path(args.output_dir, generator.image_path(i), flatten=args.flatten_output)
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            cv2.imwrite(output_path, image)
+            #since hipserspectral images cannot be seen as normal images, we need to reduce them to 3 bands. Picked infrared, blue, red
+            w_image = image[:,:,[98,11,56]]
+            cv2.imwrite(output_path, w_image)
+            #cv2.imwrite(output_path, image)
             i += 1
             if i == generator.size():  # have written all images
                 break
@@ -244,7 +247,8 @@ def run(generator, args, anchor_params):
                 continue
 
         # if we are using the GUI, then show an image
-        cv2.imshow('Image', image)
+        w_image = image[:,:,[98,11,56]]
+        cv2.imshow('Image', w_image)
         key = cv2.waitKeyEx()
 
         # press right for next image and left for previous (linux or windows, doesn't work for macOS)

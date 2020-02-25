@@ -229,7 +229,11 @@ class deepforest:
                         save_path = self.config["save_path"]
                     #Save image
                     fname = os.path.join(save_path, plot_name)
-                    cv2.imwrite(fname, result)
+                    #since hipserspectral images cannot be seen as normal images, we need to reduce them to 3 bands. Picked infrared, blue, red
+                    w_image = result[:,:,[98,11,56]]
+                    #image_path = os.path.join(save_path, '{}.png'.format(i))
+                    cv2.imwrite(fname, w_image)
+                    #cv2.imwrite(fname, result)
                     continue
                 else:
                     #Turn boxes to pandas frame and save output
@@ -350,7 +354,13 @@ class deepforest:
         #Check for correct formatting
         #Warning if image is very large and using the release model
         if numpy_image is None:
-            numpy_image = cv2.imread(image_path)
+            #numpy_image = cv2.imread(image_path)
+            with rasterio.open(image_path, 'r') as ds:
+                arr = ds.read()  # read all raster values
+               #            
+            arr = np.swapaxes(arr,0,1)
+            arr = np.swapaxes(arr,1,2)
+            arr =  arr[:, :, ::-1].copy()
 
         #Predict
         prediction = predict.predict_image(self.prediction_model,

@@ -42,7 +42,13 @@ def predict_image(model,
         numpy_image = raw_image.copy()
     else:
         #Read from path
-        numpy_image = cv2.imread(image_path)
+        #numpy_image = cv2.imread(image_path)
+        with rasterio.open(image_path, 'r') as ds:
+            arr = ds.read()  # read all raster values
+            
+        arr = np.swapaxes(arr,0,1)
+        arr = np.swapaxes(arr,1,2)
+        arr =  arr[:, :, ::-1].copy()
 
     #Make sure image exists
     try:
