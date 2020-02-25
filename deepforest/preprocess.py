@@ -117,10 +117,20 @@ def save_crop(base_dir, image_name, index, crop):
     if not os.path.exists(base_dir):
         os.makedirs(base_dir)
 
-    im = Image.fromarray(crop)
+    #im = Image.fromarray(crop)
     image_basename = os.path.splitext(image_name)[0]
-    filename = "{}/{}_{}.png".format(base_dir, image_basename, index)
-    im.save(filename)
+    filename = "{}/{}_{}.tif".format(base_dir, image_basename, index)
+    new_dataset = rasterio.open(
+        filename, 'w',
+        driver='GTiff',
+        height=crop.shape[0],
+        width=crop.shape[1],
+        count=1,
+        dtype=crop.dtype,
+    )
+    new_dataset.write(crop, 1)
+    new_dataset.close()
+    #im.save(filename)
 
     return filename
 
@@ -145,15 +155,18 @@ def split_raster(path_to_raster,
         A pandas dataframe with annotations file for training.
     """
     #Load raster as image
-    raster = Image.open(path_to_raster)
+    with rasterio.open(path_to_raster, 'r') as ds:
+        raster = ds.read()  # read all raster values
+
+    #raster = Image.open(path_to_raster)
     numpy_image = np.array(raster)
 
     #Check that its 3 band
     bands = numpy_image.shape[2]
-    if not bands == 3:
-        raise IOError(
-            "Input file {} has {} bands. DeepForest only accepts 3 band RGB rasters. If the image was cropped and saved as a .jpg, please ensure that no alpha channel was used."
-            .format(path_to_raster, bands))
+    #if not bands == 3:
+    #    raise IOError(
+    #        "Input file {} has {} bands. DeepForest only accepts 3 band RGB rasters. If the image was cropped and saved as a .jpg, please ensure that no alpha channel was used."
+    #        .format(path_to_raster, bands))
 
     #Compute sliding window index
     windows = compute_windows(numpy_image, patch_size, patch_overlap)

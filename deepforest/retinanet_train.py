@@ -374,12 +374,12 @@ def parse_args(args):
     parser.add_argument('--image-min-side',
                         help='Rescale the image so the smallest side is min_side.',
                         type=int,
-                        default=1000)
+                        default=80)#1000)
     parser.add_argument(
         '--image-max-side',
         help='Rescale the image if the largest side is larger than max_side.',
         type=int,
-        default=1333)
+        default=100)#1333)
     parser.add_argument('--config', help='Path to a configuration parameters .ini file.')
     parser.add_argument(
         '--weighted-average',
