@@ -172,9 +172,9 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
                 args.snapshot_path, '{backbone}_{dataset_type}_{{epoch:02d}}.h5'.format(
                     backbone=args.backbone, dataset_type=args.dataset_type)),
             verbose=1,
-            # save_best_only=True,
-            # monitor="mAP",
-            # mode='max'
+            save_best_only=True,
+            monitor="mAP",
+            mode='max'
         )
         checkpoint = RedirectModel(checkpoint, model)
         callbacks.append(checkpoint)
@@ -192,19 +192,19 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
     return callbacks
 
 
-def create_generators(args, preprocess_image):
+def create_generators(args, preprocess_hsi_image):
     """ Create generators for training and validation.
 
     Args:
         args             : parseargs object containing configuration for generators.
-        preprocess_image : Function that preprocesses an image for the network.
+        preprocess_hsi_image : Function that preprocesses an image for the network.
     """
     common_args = {
         'batch_size': args.batch_size,
         'config': args.config,
         'image_min_side': args.image_min_side,
         'image_max_side': args.image_max_side,
-        'preprocess_image': preprocess_image,
+        'preprocess_hsi_image': preprocess_hsi_image,
     }
 
     # create random transform generator for augmenting training data
@@ -312,14 +312,15 @@ def parse_args(args):
         help=
         'Initialize the model with pretrained imagenet weights. This is the default behaviour.',
         action='store_const',
-        const=True,
-        default=True)
+        const=False,
+        default=False)
     group.add_argument('--weights', help='Initialize the model with weights from a file.')
     group.add_argument('--no-weights',
                        help='Don\'t initialize the model with any weights.',
                        dest='imagenet_weights',
                        action='store_const',
-                       const=False)
+                       const=True,
+                       default=True)
 
     parser.add_argument('--backbone',
                         help='Backbone model used by retinanet.',
@@ -451,7 +452,7 @@ def main(forest_object,
     if input_type == "fit_generator":
         # create the generators
         train_generator, validation_generator = create_generators(
-            args, backbone.preprocess_image)
+            args, backbone.preprocess_hsi_image)
 
         #placeholder target tensor for creating models
         targets = None

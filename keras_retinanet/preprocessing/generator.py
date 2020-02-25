@@ -30,7 +30,7 @@ from ..utils.image import (
     TransformParameters,
     adjust_transform_for_image,
     apply_transform,
-    preprocess_image,
+    preprocess_hsi_image,
     resize_image,
 )
 from ..utils.transform import transform_aabb
@@ -53,7 +53,7 @@ class Generator(keras.utils.Sequence):
         transform_parameters=None,
         compute_anchor_targets=anchor_targets_bbox,
         compute_shapes=guess_shapes,
-        preprocess_image=preprocess_image,
+        preprocess_hsi_image=preprocess_hsi_image,
         config=None
     ):
         """ Initialize Generator object.
@@ -69,7 +69,7 @@ class Generator(keras.utils.Sequence):
             transform_parameters   : The transform parameters used for data augmentation.
             compute_anchor_targets : Function handler for computing the targets of anchors for an image and its annotations.
             compute_shapes         : Function handler for computing the shapes of the pyramid for a given input.
-            preprocess_image       : Function handler for preprocessing an image (scaling / normalizing) for passing through a network.
+            preprocess_hsi_image       : Function handler for preprocessing an image (scaling / normalizing) for passing through a network.
         """
         self.transform_generator    = transform_generator
         self.visual_effect_generator = visual_effect_generator
@@ -82,7 +82,7 @@ class Generator(keras.utils.Sequence):
         self.transform_parameters   = transform_parameters or TransformParameters()
         self.compute_anchor_targets = compute_anchor_targets
         self.compute_shapes         = compute_shapes
-        self.preprocess_image       = preprocess_image
+        self.preprocess_hsi_image       = preprocess_hsi_image
         self.config                 = config
 
         # Define groups
@@ -251,7 +251,7 @@ class Generator(keras.utils.Sequence):
         """ Preprocess image and its annotations.
         """
         # preprocess the image
-        image = self.preprocess_image(image)
+        image = self.preprocess_hsi_image(image)
 
         # resize image
         image, image_scale = self.resize_image(image)

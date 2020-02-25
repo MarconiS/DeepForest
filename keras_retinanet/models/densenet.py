@@ -20,7 +20,7 @@ from keras.utils import get_file
 
 from . import retinanet
 from . import Backbone
-from ..utils.image import preprocess_image
+from ..utils.image import preprocess_hsi_image
 
 
 allowed_backbones = {
@@ -64,10 +64,10 @@ class DenseNetBackbone(Backbone):
         if backbone not in allowed_backbones:
             raise ValueError('Backbone (\'{}\') not in allowed backbones ({}).'.format(backbone, allowed_backbones.keys()))
 
-    def preprocess_image(self, inputs):
+    def preprocess_hsi_image(self, inputs):
         """ Takes as input an image and prepares it for being passed through the network.
         """
-        return preprocess_image(inputs, mode='tf')
+        return preprocess_hsi_image(inputs, mode='tf')
 
 
 def densenet_retinanet(num_classes, backbone='densenet121', inputs=None, modifier=None, **kwargs):

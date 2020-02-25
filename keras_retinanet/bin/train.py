@@ -203,12 +203,12 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
     return callbacks
 
 
-def create_generators(args, preprocess_image):
+def create_generators(args, preprocess_hsi_image):
     """ Create generators for training and validation.
 
     Args
         args             : parseargs object containing configuration for generators.
-        preprocess_image : Function that preprocesses an image for the network.
+        preprocess_hsi_image : Function that preprocesses an image for the network.
     """
     common_args = {
         'batch_size'       : args.batch_size,
@@ -216,7 +216,7 @@ def create_generators(args, preprocess_image):
         'image_min_side'   : args.image_min_side,
         'image_max_side'   : args.image_max_side,
         'no_resize'        : args.no_resize,
-        'preprocess_image' : preprocess_image,
+        'preprocess_hsi_image' : preprocess_hsi_image,
     }
 
     # create random transform generator for augmenting training data
@@ -402,9 +402,9 @@ def parse_args(args):
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--snapshot',          help='Resume training from a snapshot.')
-    group.add_argument('--imagenet-weights',  help='Initialize the model with pretrained imagenet weights. This is the default behaviour.', action='store_const', const=True, default=True)
+    group.add_argument('--imagenet-weights',  help='Initialize the model with pretrained imagenet weights. This is the default behaviour.', action='store_const', const=False, default=False)
     group.add_argument('--weights',           help='Initialize the model with weights from a file.')
-    group.add_argument('--no-weights',        help='Don\'t initialize the model with any weights.', dest='imagenet_weights', action='store_const', const=False)
+    group.add_argument('--no-weights',        help='Don\'t initialize the model with any weights.', dest='imagenet_weights', action='store_const', const=True, default=True)
 
     parser.add_argument('--backbone',         help='Backbone model used by retinanet.', default='resnet50', type=str)
     parser.add_argument('--batch-size',       help='Size of the batches.', default=1, type=int)
@@ -456,7 +456,7 @@ def main(args=None):
         args.config = read_config_file(args.config)
 
     # create the generators
-    train_generator, validation_generator = create_generators(args, backbone.preprocess_image)
+    train_generator, validation_generator = create_generators(args, backbone.preprocess_hsi_image)
 
     # create the model
     if args.snapshot is not None:

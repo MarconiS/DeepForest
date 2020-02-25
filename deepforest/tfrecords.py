@@ -109,7 +109,7 @@ def create_tfrecords(annotations_file,
                                    class_file,
                                    batch_size=1,
                                    image_min_side=image_min_side,
-                                   preprocess_image=backbone.preprocess_image)
+                                   preprocess_hsi_image=backbone.preprocess_hsi_image)
 
     #chunk size
     indices = np.arange(train_generator.size())
@@ -217,7 +217,7 @@ def _parse_fn(example):
     #needs to be float to subtract weights below
     loaded_image = tf.cast(loaded_image, tf.float32)
 
-    #Turn loaded image from rgb into bgr and subtract imagenet means, see keras_retinanet.utils.image.preprocess_image
+    #Turn loaded image from rgb into bgr and subtract imagenet means, see keras_retinanet.utils.image.preprocess_hsi_image
     red, green, blue = tf.unstack(loaded_image, axis=-1)
 
     #Subtract imagenet means

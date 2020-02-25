@@ -53,12 +53,12 @@ def predict_image(model,
 
     #Check that its 3 band
     bands = numpy_image.shape[2]
-    if not bands == 3:
-        raise IOError(
-            "Input file {} has {} bands. DeepForest only accepts 3 band RGB rasters. If the image was cropped and saved as a .jpg, please ensure that no alpha channel was used."
-            .format(path_to_raster, bands))
+    #if not bands == 3:
+    #    raise IOError(
+    #        "Input file {} has {} bands. DeepForest only accepts 3 band RGB rasters. If the image was cropped and saved as a .jpg, please ensure that no alpha channel was used."
+    #        .format(path_to_raster, bands))
 
-    image = keras_retinanet_image.preprocess_image(numpy_image)
+    image = keras_retinanet_image.preprocess_hsi_image(numpy_image)
     image, scale = keras_retinanet_image.resize_image(image)
 
     if keras.backend.image_data_format() == 'channels_first':

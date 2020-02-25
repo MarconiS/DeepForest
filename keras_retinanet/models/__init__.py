@@ -39,11 +39,11 @@ class Backbone(object):
         """
         raise NotImplementedError('validate method not implemented.')
 
-    def preprocess_image(self, inputs):
+    def preprocess_hsi_image(self, inputs):
         """ Takes as input an image and prepares it for being passed through the network.
         Having this function in Backbone allows other backbones to define a specific preprocessing step.
         """
-        raise NotImplementedError('preprocess_image method not implemented.')
+        raise NotImplementedError('preprocess_hsi_image method not implemented.')
 
 
 def backbone(backbone_name):

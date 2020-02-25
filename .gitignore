@@ -17,3 +17,4 @@ tests/output/*
 docs/_build/
 .Rhistory
 .gitmodules
+.Rproj.user

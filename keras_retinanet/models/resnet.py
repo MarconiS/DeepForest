@@ -21,7 +21,7 @@ import keras_resnet.models
 
 from . import retinanet
 from . import Backbone
-from ..utils.image import preprocess_image
+from ..utils.image import preprocess_hsi_image
 
 
 class ResNetBackbone(Backbone):
@@ -69,10 +69,10 @@ class ResNetBackbone(Backbone):
         if backbone not in allowed_backbones:
             raise ValueError('Backbone (\'{}\') not in allowed backbones ({}).'.format(backbone, allowed_backbones))
 
-    def preprocess_image(self, inputs):
+    def preprocess_hsi_image(self, inputs):
         """ Takes as input an image and prepares it for being passed through the network.
         """
-        return preprocess_image(inputs, mode='caffe')
+        return preprocess_hsi_image(inputs, mode='caffe')
 
 
 def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=None, **kwargs):
@@ -90,9 +90,9 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
     # choose default input
     if inputs is None:
         if keras.backend.image_data_format() == 'channels_first':
-            inputs = keras.layers.Input(shape=(3, None, None))
+            inputs = keras.layers.Input(shape=(369, None, None))
         else:
-            inputs = keras.layers.Input(shape=(None, None, 3))
+            inputs = keras.layers.Input(shape=(None, None, 369))
 
     # create the resnet backbone
     if backbone == 'resnet50':

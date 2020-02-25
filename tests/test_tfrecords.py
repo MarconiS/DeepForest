@@ -85,7 +85,7 @@ def test_equivalence(config, setup_create_tensors):
         csv_data_file="tests/data/testfile_tfrecords.csv",
         csv_class_file="tests/data/classes.csv",
         image_min_side=config["image-min-side"],
-        preprocess_image=backbone.preprocess_image,
+        preprocess_hsi_image=backbone.preprocess_hsi_image,
     )
 
     #find file in randomize generator group

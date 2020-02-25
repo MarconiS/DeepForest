@@ -37,7 +37,7 @@ def evaluate_coco(generator, model, threshold=0.05):
     image_ids = []
     for index in progressbar.progressbar(range(generator.size()), prefix='COCO evaluation: '):
         image = generator.load_image(index)
-        image = generator.preprocess_image(image)
+        image = generator.preprocess_hsi_image(image)
         image, scale = generator.resize_image(image)
 
         if keras.backend.image_data_format() == 'channels_first':

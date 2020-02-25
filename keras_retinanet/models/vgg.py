@@ -20,7 +20,7 @@ from keras.utils import get_file
 
 from . import retinanet
 from . import Backbone
-from ..utils.image import preprocess_image
+from ..utils.image import preprocess_hsi_image
 
 
 class VGGBackbone(Backbone):
@@ -60,10 +60,10 @@ class VGGBackbone(Backbone):
         if self.backbone not in allowed_backbones:
             raise ValueError('Backbone (\'{}\') not in allowed backbones ({}).'.format(self.backbone, allowed_backbones))
 
-    def preprocess_image(self, inputs):
+    def preprocess_hsi_image(self, inputs):
         """ Takes as input an image and prepares it for being passed through the network.
         """
-        return preprocess_image(inputs, mode='caffe')
+        return preprocess_hsi_image(inputs, mode='caffe')
 
 
 def vgg_retinanet(num_classes, backbone='vgg16', inputs=None, modifier=None, **kwargs):
