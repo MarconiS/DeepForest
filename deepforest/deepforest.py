@@ -402,7 +402,9 @@ class deepforest:
             pass
         else:
             #Load raster as image
-            raster = Image.open(raster_path)
+            with rasterio.open(raster_path, 'r') as ds:
+                raster = ds.read()
+            #raster = Image.open(raster_path)
             numpy_image = np.array(raster)
 
         #Compute sliding window index

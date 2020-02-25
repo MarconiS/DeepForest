@@ -116,6 +116,7 @@ class CSVGenerator(Generator):
 
     See https://github.com/fizyr/keras-retinanet#csv-datasets for more information.
     """
+    import rasterio
 
     def __init__(
         self,
@@ -199,7 +200,9 @@ class CSVGenerator(Generator):
         """ Compute the aspect ratio for an image with image_index.
         """
         # PIL is fast for metadata
-        image = Image.open(self.image_path(image_index))
+        with rasterio.open(self.image_path(image_index), 'r') as ds:
+            image = ds.read()
+        #image = Image.open(self.image_path(image_index))
         return float(image.width) / float(image.height)
 
     def load_image(self, image_index):

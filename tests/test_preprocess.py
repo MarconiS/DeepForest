@@ -1,5 +1,6 @@
 #test preprocessing
 from PIL import Image
+import rasterio
 import numpy as np
 import pytest
 import pandas as pd
@@ -27,7 +28,9 @@ def config():
 
 @pytest.fixture()
 def numpy_image(config):
-    raster = Image.open(config["path_to_raster"])
+    #raster = Image.open(config["path_to_raster"])
+    with rasterio.open(path_to_raster, 'r') as ds:
+        raster = ds.read()
     return np.array(raster)
     
 def test_compute_windows(config, numpy_image):
