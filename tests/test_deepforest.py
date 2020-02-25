@@ -12,6 +12,7 @@ import keras
 import glob
 import numpy as np
 from PIL import Image
+import rasterio
 from matplotlib import pyplot as plt
 
 from deepforest import deepforest

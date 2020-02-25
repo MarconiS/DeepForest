@@ -16,7 +16,7 @@ limitations under the License.
 
 import csv
 import os.path
-
+import rasterio
 import numpy as np
 from PIL import Image
 

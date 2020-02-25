@@ -4,6 +4,7 @@ The preprocessing module is used to reshape data into format suitable for traini
 '''
 import pandas as pd
 from PIL import Image
+import rasterio
 import numpy as np
 import os
 import slidingwindow
@@ -60,7 +61,7 @@ def select_annotations(annotations, windows, index, allow_empty=False):
     window_ymax = window_ymin + h
 
     #buffer coordinates a bit to grab boxes that might start just against the image edge. Don't allow boxes that start and end after the offset
-    offset = 40
+    offset = 4#40
     selected_annotations = annotations[(annotations.xmin > (window_xmin - offset)) &
                                        (annotations.xmin < (window_xmax)) &
                                        (annotations.xmax >
@@ -72,17 +73,18 @@ def select_annotations(annotations, windows, index, allow_empty=False):
                                        (annotations.ymax >
                                         (window_ymin)) & (annotations.ymax <
                                                           (window_ymax + offset))].copy()
+    
 
     #change the image name
     image_name = os.path.splitext("{}".format(annotations.image_path.unique()[0]))[0]
     image_basename = os.path.splitext(image_name)[0]
-    selected_annotations.image_path = "{}_{}.png".format(image_basename, index)
+    selected_annotations.image_path = "{}_{}.tif".format(image_basename, index)
 
     ##If no matching annotations, return a line with the image name, but no records
     if selected_annotations.empty:
         if allow_empty:
             selected_annotations = pd.DataFrame(
-                ["{}_{}.png".format(image_basename, index)], columns=["image_path"])
+                ["{}_{}.tif".format(image_basename, index)], columns=["image_path"])
             selected_annotations["xmin"] = ""
             selected_annotations["ymin"] = ""
             selected_annotations["xmax"] = ""
@@ -125,10 +127,14 @@ def save_crop(base_dir, image_name, index, crop):
         driver='GTiff',
         height=crop.shape[0],
         width=crop.shape[1],
-        count=1,
-        dtype=crop.dtype,
+        count=crop.shape[2],
+        dtype='int16',
     )
-    new_dataset.write(crop, 1)
+
+    for ii in range(crop.shape[2]):
+        tmp = crop[:,:,ii].astype('int16')
+        new_dataset.write(tmp, ii+1)
+
     new_dataset.close()
     #im.save(filename)
 
@@ -157,7 +163,9 @@ def split_raster(path_to_raster,
     #Load raster as image
     with rasterio.open(path_to_raster, 'r') as ds:
         raster = ds.read()  # read all raster values
-
+    raster = np.swapaxes(raster,0,1)
+    raster = np.swapaxes(raster,1,2)
+    raster =  raster[:, :, ::-1].copy()
     #raster = Image.open(path_to_raster)
     numpy_image = np.array(raster)
 

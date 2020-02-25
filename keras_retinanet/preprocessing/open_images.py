@@ -18,7 +18,7 @@ import csv
 import json
 import os
 import warnings
-
+import rasterio
 import numpy as np
 from PIL import Image
 

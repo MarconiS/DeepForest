@@ -17,6 +17,7 @@ limitations under the License.
 from ..preprocessing.generator import Generator
 from ..utils.image import read_image_bgr
 
+import rasterio
 import os
 import numpy as np
 from six import raise_from

@@ -10,6 +10,7 @@ import csv
 import warnings
 
 from PIL import Image
+import rasterio
 with warnings.catch_warnings():
     #Suppress some of the verbose tensorboard warnings, compromise to avoid numpy version errors
     warnings.filterwarnings("ignore", category=FutureWarning)
