@@ -28,9 +28,9 @@ def draw_box(image, box, color, thickness=1):
         color     : The color of the box.
         thickness : The thickness of the lines to draw a box with.
     """
+    np.ascontiguousarray(image)
     print()
     print(image.shape)
-    np.ascontiguousarray(image)
     b = np.array(box).astype(int)
     cv2.rectangle(image, (b[0], b[1]), (b[2], b[3]), color, thickness, cv2.LINE_AA)
 
