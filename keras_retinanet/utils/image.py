@@ -87,9 +87,10 @@ def preprocess_hsi_image(x, mode='l2'):
 
     if mode == 'l2':
         dat = x**2
-        normMat = dat.apply(np.sum, axis=1)
-        normMat = normMat.pow(1./2)
-        normMat = np.tile(normMat, (len(dat.columns),1))
+        #normMat = dat.apply(np.sum, axis=1)
+        normMat = np.apply_along_axis(np.sum, 1, dat)
+        normMat = np.power(normMat, 1./2)
+        normMat = np.tile(normMat, (dat.shape[1],1))
         x= x / np.transpose(normMat)
 
     return x
