@@ -28,10 +28,8 @@ def draw_box(image, box, color, thickness=1):
         color     : The color of the box.
         thickness : The thickness of the lines to draw a box with.
     """
-    image = np.array(image)
+    np.ascontiguousarray(image)
     b = np.array(box).astype(int)
-    print()
-    print(b)
     cv2.rectangle(image, (b[0], b[1]), (b[2], b[3]), color, thickness, cv2.LINE_AA)
 
 
@@ -58,7 +56,9 @@ def draw_boxes(image, boxes, color, thickness=1):
         color     : The color of the boxes.
         thickness : The thickness of the lines to draw boxes with.
     """
-    image = np.array(image)
+    np.ascontiguousarray(image)
+    print()
+    print(image.shape)
     for b in boxes:
         draw_box(image, b, color, thickness=thickness)
 
@@ -75,7 +75,7 @@ def draw_detections(image, boxes, scores, labels, color=None, label_to_name=None
         label_to_name   : (optional) Functor for mapping a label to a name.
         score_threshold : Threshold used for determining what detections to draw.
     """
-    image = np.array(image)
+    np.ascontiguousarray(image)
     selection = np.where(scores > score_threshold)[0]
 
     for i in selection:
@@ -96,7 +96,7 @@ def draw_annotations(image, annotations, color=(0, 0, 0), label_to_name=None):
         color         : The color of the boxes. By default the color from keras_retinanet.utils.colors.label_color will be used.
         label_to_name : (optional) Functor for mapping a label to a name.
     """
-    image = np.array(image)
+    np.ascontiguousarray(image)
     if isinstance(annotations, np.ndarray):
         annotations = {'bboxes': annotations[:, :4], 'labels': annotations[:, 4]}
 
