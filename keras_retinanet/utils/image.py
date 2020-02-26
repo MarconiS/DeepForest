@@ -80,6 +80,8 @@ def preprocess_hsi_image(x, mode='l2'):
     # mostly identical to "https://github.com/keras-team/keras-applications/blob/master/keras_applications/imagenet_utils.py"
     # except for converting RGB -> BGR since we are dealing with many more channels
     # covert always to float32 to keep compatibility with opencv
+    npix = x.shape
+    x = x.flatten().reshape(npix[0]*npix[1], npix[2])
     x = x.astype(np.float32)
     #if mode == 'l2':
     dat = x**2
@@ -88,6 +90,7 @@ def preprocess_hsi_image(x, mode='l2'):
     normMat = np.power(normMat, 1./2)
     normMat = np.tile(normMat, (dat.shape[1],1))
     x= x / np.transpose(normMat)
+    x = x.reshape(npix[0], npix[1], npix[2])
     return x
 
 
