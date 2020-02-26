@@ -29,7 +29,7 @@ def draw_box(image, box, color, thickness=1):
         thickness : The thickness of the lines to draw a box with.
     """
     b = np.array(box).astype(int)
-    cv2.rectangle(image, (b[0], b[1]), (b[2], b[3]), color, thickness, cv2.LINE_AA)
+    cv2.rectangle(image, (int(b[0]), int(b[1])), (int(b[2]), int(b[3])), color, thickness, cv2.LINE_AA)
 
 
 def draw_caption(image, box, caption):
@@ -41,8 +41,8 @@ def draw_caption(image, box, caption):
         caption : String containing the text to draw.
     """
     b = np.array(box).astype(int)
-    cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
-    cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1)
+    cv2.putText(image, caption, (int(b[0]), int(b[1]) - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
+    cv2.putText(image, caption, (int(b[0]), int(b[1]) - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1)
 
 
 def draw_boxes(image, boxes, color, thickness=1):
