@@ -60,8 +60,6 @@ def draw_boxes(image, boxes, color, thickness=1):
         thickness : The thickness of the lines to draw boxes with.
     """
     image = np.ascontiguousarray(image)
-    print()
-    print(image.shape)
     for b in boxes:
         draw_box(image, b, color, thickness=thickness)
 
