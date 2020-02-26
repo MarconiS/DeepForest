@@ -71,28 +71,23 @@ def preprocess_image(x, mode='caffe'):
 
 def preprocess_hsi_image(x, mode='l2'):
     """ Preprocess an hiperspectral image by subtracting the ImageNet mean.
-
     Args
         x: np.array of shape (None, None, 369) or (369, None, None).
         mode: currently l2 normalization only.
-
     Returns
         The input with the ImageNet mean subtracted.
     """
     # mostly identical to "https://github.com/keras-team/keras-applications/blob/master/keras_applications/imagenet_utils.py"
     # except for converting RGB -> BGR since we are dealing with many more channels
-
     # covert always to float32 to keep compatibility with opencv
     x = x.astype(np.float32)
-
-    if mode == 'l2':
-        dat = x**2
-        #normMat = dat.apply(np.sum, axis=1)
-        normMat = np.apply_along_axis(np.sum, 1, dat)
-        normMat = np.power(normMat, 1./2)
-        normMat = np.tile(normMat, (dat.shape[1],1))
-        x= x / np.transpose(normMat)
-
+    #if mode == 'l2':
+    dat = x**2
+    #normMat = dat.apply(np.sum, axis=1)
+    normMat = np.apply_along_axis(np.sum, 1, dat)
+    normMat = np.power(normMat, 1./2)
+    normMat = np.tile(normMat, (dat.shape[1],1))
+    x= x / np.transpose(normMat)
     return x
 
 
