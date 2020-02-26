@@ -28,7 +28,8 @@ def draw_box(image, box, color, thickness=1):
         color     : The color of the box.
         thickness : The thickness of the lines to draw a box with.
     """
-    np.ascontiguousarray(image)
+    image = np.ascontiguousarray(image)
+
     print()
     print(image.shape)
     b = np.array(box).astype(int)
@@ -43,7 +44,7 @@ def draw_caption(image, box, caption):
         box     : A list of 4 elements (x1, y1, x2, y2).
         caption : String containing the text to draw.
     """
-    image = np.array(image)
+    image = np.ascontiguousarray(image)
     b = np.array(box).astype(int)
     cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
     cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1)
@@ -58,7 +59,7 @@ def draw_boxes(image, boxes, color, thickness=1):
         color     : The color of the boxes.
         thickness : The thickness of the lines to draw boxes with.
     """
-    np.ascontiguousarray(image)
+    image = np.ascontiguousarray(image)
     print()
     print(image.shape)
     for b in boxes:
@@ -77,7 +78,7 @@ def draw_detections(image, boxes, scores, labels, color=None, label_to_name=None
         label_to_name   : (optional) Functor for mapping a label to a name.
         score_threshold : Threshold used for determining what detections to draw.
     """
-    np.ascontiguousarray(image)
+    image = np.ascontiguousarray(image)
     selection = np.where(scores > score_threshold)[0]
 
     for i in selection:
@@ -98,7 +99,7 @@ def draw_annotations(image, annotations, color=(0, 0, 0), label_to_name=None):
         color         : The color of the boxes. By default the color from keras_retinanet.utils.colors.label_color will be used.
         label_to_name : (optional) Functor for mapping a label to a name.
     """
-    np.ascontiguousarray(image)
+    image = np.ascontiguousarray(image)
     if isinstance(annotations, np.ndarray):
         annotations = {'bboxes': annotations[:, :4], 'labels': annotations[:, 4]}
 
