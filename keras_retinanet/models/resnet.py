@@ -104,7 +104,7 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
         resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
     elif backbone == 'resnet50_3d':
         nputs = keras.layers.Input(shape=(None, None, 369, 1))
-        resnet = Resnet3DBuilder.build_resnet_50(inputs, num_classes)#,include_top=False, freeze_bn=True)
+        resnet = Resnet3DBuilder.build_resnet_50((400, 400, 369,1),8)#,include_top=False, freeze_bn=True)
         #resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
     else:
         raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
