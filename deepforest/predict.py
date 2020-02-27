@@ -8,6 +8,7 @@ import keras
 import cv2
 import pandas as pd
 import tensorflow as tf
+import rasterio
 
 #Retinanet-viz
 from keras_retinanet.utils import image as keras_retinanet_image
