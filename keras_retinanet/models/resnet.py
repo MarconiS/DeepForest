@@ -18,7 +18,7 @@ import keras
 from keras.utils import get_file
 import keras_resnet
 import keras_resnet.models
-from resnet3d import Resnet3DBuilder
+from keras_resnet3d.resnet3d import Resnet3DBuilder
 
 from . import retinanet
 from . import Backbone
