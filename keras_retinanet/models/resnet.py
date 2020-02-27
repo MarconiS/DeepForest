@@ -18,6 +18,7 @@ import keras
 from keras.utils import get_file
 import keras_resnet
 import keras_resnet.models
+from resnet3d import Resnet3DBuilder
 
 from . import retinanet
 from . import Backbone
@@ -101,6 +102,9 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
         resnet = keras_resnet.models.ResNet101(inputs, include_top=False, freeze_bn=True)
     elif backbone == 'resnet152':
         resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
+    elif backbone == 'resnet50_3d':
+        resnet = Resnet3DBuilder.build_resnet_50(inputs,include_top=False, freeze_bn=True)
+        #resnet = keras_resnet.models.ResNet152(inputs, include_top=False, freeze_bn=True)
     else:
         raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
 
@@ -122,3 +126,6 @@ def resnet101_retinanet(num_classes, inputs=None, **kwargs):
 
 def resnet152_retinanet(num_classes, inputs=None, **kwargs):
     return resnet_retinanet(num_classes=num_classes, backbone='resnet152', inputs=inputs, **kwargs)
+
+def resnet152_retinanet(num_classes, inputs=None, **kwargs):
+    return resnet_retinanet(num_classes=num_classes, backbone='resnet50_3d', inputs=inputs, **kwargs)

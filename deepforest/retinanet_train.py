@@ -343,7 +343,7 @@ def parse_args(args):
     parser.add_argument('--steps',
                         help='Number of steps per epoch.',
                         type=int,
-                        default=1000)
+                        default=100)
     parser.add_argument('--lr', help='Learning rate.', type=float, default=1e-5)
     parser.add_argument(
         '--snapshot-path',
@@ -406,6 +406,7 @@ def parse_args(args):
                         help='Queue length for multiprocessing workers in fit_generator.',
                         type=int,
                         default=10)
+    #anchor_parameters
 
     #callback arguments
     parser.add_argument('--score-threshold',
