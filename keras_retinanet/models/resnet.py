@@ -109,6 +109,7 @@ def resnet_retinanet(num_classes, backbone='resnet50', inputs=None, modifier=Non
     else:
         raise ValueError('Backbone (\'{}\') is invalid.'.format(backbone))
 
+    print(resnet.outputs)
     # invoke modifier if given
     if modifier:
         resnet = modifier(resnet)
