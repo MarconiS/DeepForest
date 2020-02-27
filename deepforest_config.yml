@@ -11,15 +11,15 @@ weights: None
 ### Retinanet backbone. See the keras-retinanet repo for options. Only resnet50 has been well explored.
 backbone: resnet50
 ### Resize images to min size. Retinanet anchors may need to be remade if signficantly reducing image size.
-image-min-side: 80
+image-min-side: 400
 ### Resize images to min size. Retinanet anchors may need to be remade if signficantly reducing image size.
-image-max-side: 100
+image-max-side: 400
 ##Number of GPUs to train
 multi-gpu: 1
 #Number of full cycles of the input data to train
 epochs: 1
 #Validation annotations. If training using fit_generator, these will be evaluated as a callback at the end of each epoch.
-validation_annotations: None
+validation_annotations: "///orange/ewhite/s.marconi/Chapter4//Crops/evaluation_example.csv"
 ###Freeze layers. Used for model finetuning, freeze the bottom n layers.
 freeze_layers: 0
 ###Freeze resnet backbone entirely.
